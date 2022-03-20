@@ -4,7 +4,7 @@
  */
 //% weight=100 color=#0fbc11 icon=""
 namespace flappy_bird {
-    
+
     let obstacles: game.LedSprite[] = []
     let player: game.LedSprite = null
     const flappy_bird_wrapper = {
@@ -23,17 +23,19 @@ namespace flappy_bird {
         while (true) {
             while (flappy_bird_wrapper.obstacles.length > 0 && flappy_bird_wrapper.obstacles[0].get(LedSpriteProperty.X) == 0) {
                 flappy_bird_wrapper.obstacles.removeAt(0).delete()
+                //game.setScore(game.score() + 1)
             }
             for (let obstacle of flappy_bird_wrapper.obstacles) {
                 obstacle.change(LedSpriteProperty.X, -1)
             }
             if (flappy_bird_wrapper.ticks % 3 == 0) {
                 flappy_bird_wrapper.empty_y_coord = randint(0, 4)
-                for (let index = 0; index <= 4; index++) {
-                    if (index != flappy_bird_wrapper.empty_y_coord) {
-                        flappy_bird_wrapper.obstacles.push(game.createSprite(4, index))
+                for (let i = 0; i <= 4; i++) {
+                    if (i != flappy_bird_wrapper.empty_y_coord) {
+                        flappy_bird_wrapper.obstacles.push(game.createSprite(4, i))
                     }
                 }
+                
             }
             for (let obstacle2 of flappy_bird_wrapper.obstacles) {
                 if (obstacle2.get(LedSpriteProperty.X) == flappy_bird_wrapper.player.get(LedSpriteProperty.X) && obstacle2.get(LedSpriteProperty.Y) == flappy_bird_wrapper.player.get(LedSpriteProperty.Y)) {
@@ -42,15 +44,16 @@ namespace flappy_bird {
             }
 
             flappy_bird_wrapper.ticks += 1
+            
             basic.pause(1000)
         }
     }
 
     //% block
-    export function buttonPressedA(){
+    export function buttonPressedA() {
         flappy_bird_wrapper.player.change(LedSpriteProperty.Y, -1)
     }
-    
+
     //% block
     export function buttonPressedB() {
         flappy_bird_wrapper.player.change(LedSpriteProperty.Y, 1)

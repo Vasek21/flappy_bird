@@ -7,11 +7,9 @@
         "microphone": "*"
     },
     "files": [
-        "main.blocks",
         "main.ts",
         "README.md",
-        "flappy_bird.ts",
-        "main.py"
+        "flappy_bird.ts"
     ],
     "testFiles": [
         "test.ts"
