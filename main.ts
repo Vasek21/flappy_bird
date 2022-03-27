@@ -1,7 +1,4 @@
 input.onButtonPressed(Button.A, function () {
-    if (game.isGameOver()) {
-
-    }
     if (!(game_started)) {
         if (game_counter > 1) {
             game_counter += -1
@@ -10,6 +7,9 @@ input.onButtonPressed(Button.A, function () {
     } else {
         if (game_counter == 1) {
             flappy_bird.buttonPressedA();
+        }
+        if (game_counter == 2) {
+            Snake.turnRight()
         }
     }
 })
@@ -20,9 +20,14 @@ input.onButtonPressed(Button.AB, function () {
     }
     if (!(game_started)) {
         if (game_counter == 1) {
-            game_started = true
-            flappy_bird.startFlapyBird()
+            game_started = true;
+            flappy_bird.startFlapyBird();
         }
+        else if (game_counter == 2){
+            game_started = true;
+            Snake.startSnakeLoop();
+        }
+
     }
 })
 input.onButtonPressed(Button.B, function () {
@@ -37,6 +42,9 @@ input.onButtonPressed(Button.B, function () {
     } else {
         if (game_counter == 1) {
             flappy_bird.buttonPressedB();
+        }
+        if( game_counter == 2){
+            Snake.turnLeft()
         }
     }
 })

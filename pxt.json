@@ -1,5 +1,5 @@
 {
-    "name": "flappy_bird",
+    "name": "game_console",
     "description": "",
     "dependencies": {
         "core": "*",
@@ -9,7 +9,8 @@
     "files": [
         "main.ts",
         "README.md",
-        "flappy_bird.ts"
+        "flappy_bird.ts",
+        "snake.ts"
     ],
     "testFiles": [
         "test.ts"
@@ -18,7 +19,7 @@
         "branch": "v4.0.18",
         "tag": "v4.0.18",
         "commits": "https://github.com/microsoft/pxt-microbit/commits/b9d2eeff8116b75fa50f663091b0e3acd800b7bc",
-        "target": "4.1.14",
+        "target": "4.0.18",
         "pxt": "7.0.14",
         "targetId": "microbit"
     },
