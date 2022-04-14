@@ -4,23 +4,17 @@
  */
 //% weight=100 color=#0fbc11 icon=""
 namespace Snake {
-    let delay = 0
-    let score = 0
-    let last: game.LedSprite = null
-    let dx: number[] = []
-    let dxOffset: number[][] = []
-    let direction = 0
-    let py = 0
-    let px = 0
-    direction = 1
-    dxOffset = [[1, 0], [0, 1], [-1, 0], [0, -1]]
-    let snake: game.LedSprite[] =[];
-    let apple: game.LedSprite;
+    let snake: game.LedSprite[] = [];
+    let apple: game.LedSprite = null;
+    let last_snake_part: game.LedSprite = null
 
-    // when snake grows to 10 pixels, it stops growing
-    // to avoid filling the LED
-    let maxLength = 10
-    
+    let directions: number[][]  = [[1, 0], [0, 1], [-1, 0], [0, -1]]
+    let direction : number = 1
+    let pos_y : number = 0
+    let pos_x : number = 0
+
+    let score: number = 0
+    let maxLength : number = 10
 
     export function turnLeft() {
         direction = (direction + 3) % 4
@@ -30,46 +24,31 @@ namespace Snake {
         direction = (direction + 1) % 4
     }
 
-    export function initSnake(arr: Array<number>) {
+    function createSnake(arr: Array<number>) {
         let result = [];
-        for (let i = 0; i + 1 < arr.length; i += 2) {
-            result.push(game.createSprite(arr[i], arr[i + 1]));
-        }
+        result.push(game.createSprite(arr[0], arr[1]));
+        result.push(game.createSprite(arr[2], arr[3]));
         return result;
     }
 
-    function isOnSnake(x: number, y: number) {
-        for (let body of snake) {
-            if (body.x() == x && body.y() == y) {
+    function isSnake(x: number, y: number) {
+        for (let part of snake) {
+            if (part.x() == x && part.y() == y) {
                 return true
             }
         }
         return false
     }
 
-    export function moveForward() {
-        dx = dxOffset[direction]
-        px += dx[0]
-        py += dx[1]
-        if (!(validPixelCoordinate(px, py))) {
+    function moveForward() {
+        pos_x += directions[direction][0]
+        pos_y += directions[direction][1]
+        if (!(validateCoords(pos_x, pos_y))) {
             gameOver()
         }
-        snake.unshift(game.createSprite(px, py))
-        last = snake.pop()
-        last.delete()
-    }
-    export function resetGame() {
-        game.setScore(0)
-        score = 0
-        direction = 0
-        px = 0
-        py = 0
-        for (let s of snake) {
-            s.delete()
-        }
-        snake = Snake.initSnake([px, py, px + 1, py]);
-        placeNextApple()
-        game.resume()
+        snake.unshift(game.createSprite(pos_x, pos_y))
+        last_snake_part = snake.pop()
+        last_snake_part.delete()
     }
 
     function gameOver() {
@@ -79,36 +58,36 @@ namespace Snake {
         game.gameOver()
     }
 
-    export function placeNextApple() {
-        let x, y;
-        do {
+    function generateApple() {
+        let x = Math.randomRange(0, 4);
+        let y = Math.randomRange(0, 4);
+        while (isSnake(x, y)){
             x = Math.randomRange(0, 4);
             y = Math.randomRange(0, 4);
-        } while (isOnSnake(x, y));
+        }
         apple.goTo(x, y);
         apple.setBrightness(100);
     }
-    export function validPixelCoordinate(nx: number, ny: number) {
-        return nx >= 0 && nx <= 4 && ny >= 0 && ny <= 4 && !(isOnSnake(nx, ny))
+    function validateCoords(nx: number, ny: number) {
+        return nx >= 0 && nx <= 4 && ny >= 0 && ny <= 4 && !(isSnake(nx, ny))
     }
 
     export function startSnakeLoop(){
-        snake = Snake.initSnake([px, py, px + 1, py]);
+        snake = createSnake([pos_x, pos_y, pos_x + 1, pos_y]);
         apple = game.createSprite(2, 2)
-        placeNextApple()
+        generateApple()
         while(true){
             if (game.isGameOver()) {
                 return;
             }
-            delay = Math.max(100, 1000 - score * 50)
-            basic.pause(delay)
+            basic.pause(Math.max(100, 1000 - score * 50))
             moveForward()
             if (snake[0].isTouching(apple)) {
                 if (snake.length < maxLength) {
                     snake.push(snake[snake.length - 1])
                 }
                 score += 1
-                placeNextApple()
+                generateApple()
             }
         }
     }

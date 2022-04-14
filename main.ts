@@ -1,60 +1,60 @@
-input.onButtonPressed(Button.A, function () {
-    if (!(game_started)) {
+input.onButtonPressed(Button.A, function on_button_pressed_a() {
+    if (!game_started) {
         if (game_counter > 1) {
             game_counter += -1
             basic.showNumber(game_counter)
         }
+        
     } else {
         if (game_counter == 1) {
-            flappy_bird.buttonPressedA();
+            FlappyBird.buttonPressedA()
         }
+        
         if (game_counter == 2) {
             Snake.turnRight()
         }
+        
     }
+    
 })
-
-input.onButtonPressed(Button.AB, function () {
-    if (game.isGameOver()) {
-        control.reset()
-    }
-    if (!(game_started)) {
+input.onButtonPressed(Button.AB, function on_button_pressed_ab() {
+    
+    if (!game_started) {
         if (game_counter == 1) {
-            game_started = true;
-            flappy_bird.startFlapyBird();
+            game_started = true
+            FlappyBird.startFlapyBird()
+        } else if (game_counter == 2) {
+            game_started = true
+            Snake.startSnakeLoop()
         }
-        else if (game_counter == 2){
-            game_started = true;
-            Snake.startSnakeLoop();
-        }
-
+        
     }
+    
 })
-input.onButtonPressed(Button.B, function () {
-    if (!(playing) && game_started) {
-
-    }
-    if (!(game_started)) {
-        if (game_counter < 5) {
+input.onButtonPressed(Button.B, function on_button_pressed_b() {
+    
+    if (!game_started) {
+        if (game_counter < 2) {
             game_counter += 1
             basic.showNumber(game_counter)
         }
+        
     } else {
         if (game_counter == 1) {
-            flappy_bird.buttonPressedB();
+            FlappyBird.buttonPressedB()
         }
-        if( game_counter == 2){
+        
+        if (game_counter == 2) {
             Snake.turnLeft()
         }
+        
     }
+    
 })
-input.onGesture(Gesture.Shake, function () {
+input.onGesture(Gesture.Shake, function on_gesture_shake() {
     control.reset()
 })
-function main() {
-    basic.showNumber(game_counter)
-}
-let playing = false
+
 let game_started = false
-let game_counter = 1;
-main()
+let game_counter = 1
+basic.showNumber(game_counter)

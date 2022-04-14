@@ -10,7 +10,8 @@
         "main.ts",
         "README.md",
         "flappy_bird.ts",
-        "snake.ts"
+        "snake.ts",
+        "testing.ts"
     ],
     "testFiles": [
         "test.ts"
